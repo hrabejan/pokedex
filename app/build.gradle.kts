@@ -71,6 +71,7 @@ dependencies {
 
     //Retrofit
     implementation(libs.retrofit)
+    implementation(libs.moshi)
 
     //Room
     implementation(libs.androidx.room.paging)
@@ -89,5 +90,5 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     //PokeAPI
-    implementation(libs.poke.api)
+//    implementation(libs.poke.api)
 }

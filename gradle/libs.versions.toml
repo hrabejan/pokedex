@@ -15,6 +15,7 @@ composeNavigation = "2.8.0-beta01"
 serialization = "1.6.3"
 hilt = "2.44"
 poke-api-ver="1.0.0"
+moshi-ver = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 hilt-android = {module = "com.google.dagger:hilt-android", version.ref = "hilt"}
 hilt-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
 poke-api = {module ="fr.tykok:pokeapi", version.ref = "poke-api-ver"}
+moshi = {module = "com.squareup.retrofit2:converter-moshi", version.ref = "moshi-ver"}
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
