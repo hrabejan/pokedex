@@ -87,4 +87,7 @@ dependencies {
     //Hilt DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    //PokeAPI
+    implementation(libs.poke.api)
 }

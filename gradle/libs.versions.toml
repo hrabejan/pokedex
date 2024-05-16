@@ -14,6 +14,7 @@ room = "2.6.1"
 composeNavigation = "2.8.0-beta01"
 serialization = "1.6.3"
 hilt = "2.44"
+poke-api-ver="1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ navigation-compose = { module = "androidx.navigation:navigation-compose", versio
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 hilt-android = {module = "com.google.dagger:hilt-android", version.ref = "hilt"}
 hilt-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
+poke-api = {module ="fr.tykok:pokeapi", version.ref = "poke-api-ver"}
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
