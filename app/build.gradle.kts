@@ -82,11 +82,14 @@ dependencies {
     //Room
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
 
     //Jetpack Compose Navigation
     implementation(libs.navigation.compose)
+    //Hilt navigation
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //Compose ConstraintLayout
     implementation(libs.androidx.constraintlayout.compose)
