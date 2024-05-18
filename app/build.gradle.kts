@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -42,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -69,9 +70,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Coil
+    implementation(libs.coil.compose)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.moshi)
+    ksp(libs.moshi.kotlin.codegen)
+    implementation(libs.moshi.kotlin)
 
     //Room
     implementation(libs.androidx.room.paging)
@@ -82,13 +88,18 @@ dependencies {
     //Jetpack Compose Navigation
     implementation(libs.navigation.compose)
 
+    //Compose ConstraintLayout
+    implementation(libs.androidx.constraintlayout.compose)
+
+    //Paging
+    implementation(libs.androidx.paging.runtime.ktx)
+    //Paging-Compose
+    implementation(libs.androidx.paging.compose)
+
     //Serialization
     implementation(libs.kotlinx.serialization.json)
 
     //Hilt DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    //PokeAPI
-//    implementation(libs.poke.api)
 }
