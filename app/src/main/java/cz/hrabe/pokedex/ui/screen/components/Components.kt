@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,11 +25,13 @@ fun TypeList(
     types: List<String>,
     orientation: Orientation = Orientation.Vertical
 ) {
+    val spacerModifier =
+        if (orientation == Orientation.Vertical) Modifier.height(8.dp) else Modifier.width(8.dp)
     val fill: @Composable () -> Unit = {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = spacerModifier)
         for (type in types) {
             Type(name = type.replaceFirstChar { it.uppercase() })
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = spacerModifier)
         }
     }
     if (orientation == Orientation.Vertical) {
