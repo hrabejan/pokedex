@@ -4,10 +4,14 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import cz.hrabe.pokedex.domain.Pokemon
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
 
+    @Query("SELECT * FROM pokemon WHERE id=:id")
+    fun getPokemonById(id: Int) : Flow<Pokemon>
 
     @Upsert
     fun upsertAll(pokemon: List<PokemonEntity>)
