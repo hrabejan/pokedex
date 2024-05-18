@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     composable<Destination.Detail> { backStackEntry ->
                         val detail: Destination.Detail = backStackEntry.toRoute()
                         val detailScreenViewModel =
-                            hiltViewModel<DetailScreenViewModel, DetailScreenViewModel.DetailScreenViewModelFactory> { factory ->
+                            hiltViewModel<DetailScreenViewModel, DetailScreenViewModel.Factory> { factory ->
                                 factory.create(detail.id)
                             }
                         DetailScreen(

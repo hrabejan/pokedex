@@ -7,11 +7,13 @@ import cz.hrabe.pokedex.domain.Pokemon
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@HiltViewModel(assistedFactory = DetailScreenViewModel.Factory::class)
 class DetailScreenViewModel @AssistedInject constructor(
     @Assisted private val id: Int,
     private val getSinglePokemonFromDbUseCase: GetSinglePokemonFromDbUseCase
@@ -32,7 +34,7 @@ class DetailScreenViewModel @AssistedInject constructor(
 
 
     @AssistedFactory
-    interface DetailScreenViewModelFactory {
+    interface Factory {
         fun create(id: Int): DetailScreenViewModel
     }
 }
