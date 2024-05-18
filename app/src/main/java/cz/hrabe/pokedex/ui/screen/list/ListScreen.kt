@@ -2,8 +2,10 @@ package cz.hrabe.pokedex.ui.screen.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,9 +43,15 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.hrabe.pokedex.R
 import cz.hrabe.pokedex.domain.Pokemon
+import cz.hrabe.pokedex.ui.screen.components.NumberHeader
+import cz.hrabe.pokedex.ui.screen.components.TypeList
 
 @Composable
-fun ListScreen(listScreenViewModel: ListScreenViewModel, modifier: Modifier = Modifier, onClick: (Pokemon) -> Unit) {
+fun ListScreen(
+    listScreenViewModel: ListScreenViewModel,
+    modifier: Modifier = Modifier,
+    onClick: (Pokemon) -> Unit
+) {
     val pokemonPagingItems = listScreenViewModel.pokemon.collectAsLazyPagingItems()
     val perRow = 2
 
@@ -99,7 +107,8 @@ fun PokemonItem(pokemon: Pokemon, modifier: Modifier = Modifier, onClick: (Pokem
                         end.linkTo(parent.end)
                         start.linkTo(parent.start)
                         width = Dimension.fillToConstraints
-                    }.zIndex(2f))
+                    }
+                    .zIndex(2f))
 
             Text(
                 text = pokemon.name.replaceFirstChar { it.uppercase() },
@@ -116,7 +125,7 @@ fun PokemonItem(pokemon: Pokemon, modifier: Modifier = Modifier, onClick: (Pokem
                     .zIndex(2f)
             )
 
-            TypeList(pokemon.types, modifier = Modifier
+            TypeList(types = pokemon.types, modifier = Modifier
                 .constrainAs(col) {
                     top.linkTo(name.bottom)
                     start.linkTo(parent.start)
@@ -159,39 +168,3 @@ fun PokemonItem(pokemon: Pokemon, modifier: Modifier = Modifier, onClick: (Pokem
     }
 }
 
-@Composable
-fun NumberHeader(number: Int, modifier: Modifier) {
-    val numberText = number.toString().padStart(3, '0')
-    Text(
-        text = "#$numberText",
-        textAlign = TextAlign.End,
-        style = TextStyle(
-            color = Color.Black.copy(alpha = 0.2f),
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize
-        ),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun TypeList(types: List<String>, modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Spacer(modifier = Modifier.height(8.dp))
-        for (type in types) {
-            Type(name = type.replaceFirstChar { it.uppercase() })
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-    }
-}
-
-@Composable
-fun Type(name: String, modifier: Modifier = Modifier) {
-    Surface(color = Color.White.copy(alpha = 0.2f), shape = CircleShape, modifier = modifier) {
-        Text(
-            text = name,
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-        )
-    }
-}
