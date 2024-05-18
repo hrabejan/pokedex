@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import cz.hrabe.pokedex.ui.screen.Destination
 import cz.hrabe.pokedex.ui.screen.detail.DetailScreen
-import cz.hrabe.pokedex.ui.screen.detail.DetailScreenViewModelFactory
+import cz.hrabe.pokedex.ui.screen.detail.DetailScreenViewModel
 import cz.hrabe.pokedex.ui.screen.list.ListScreen
 import cz.hrabe.pokedex.ui.screen.list.ListScreenViewModel
 import cz.hrabe.pokedex.ui.theme.PokeDexTheme
@@ -38,12 +38,12 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Destination.Detail> { backStackEntry ->
                         val detail: Destination.Detail = backStackEntry.toRoute()
+                        val detailScreenViewModel =
+                            hiltViewModel<DetailScreenViewModel, DetailScreenViewModel.DetailScreenViewModelFactory> { factory ->
+                                factory.create(detail.id)
+                            }
                         DetailScreen(
-                            detailScreenViewModel = viewModel(
-                                factory = DetailScreenViewModelFactory(
-                                    detail.id
-                                )
-                            )
+                            detailScreenViewModel = detailScreenViewModel
                         )
                     }
                 }
