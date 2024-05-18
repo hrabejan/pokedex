@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonDao {
 
     @Query("SELECT * FROM pokemon WHERE id=:id")
-    fun getPokemonById(id: Int) : Flow<Pokemon>
+    fun getPokemonById(id: Int) : Flow<PokemonEntity>
 
     @Upsert
     fun upsertAll(pokemon: List<PokemonEntity>)
