@@ -105,4 +105,7 @@ dependencies {
     //Hilt DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    //Palette
+    implementation(libs.androidx.palette.ktx)
 }
