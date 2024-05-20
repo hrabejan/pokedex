@@ -18,19 +18,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun TypeList(
     modifier: Modifier = Modifier,
     types: List<String>,
-    orientation: Orientation = Orientation.Vertical
+    orientation: Orientation = Orientation.Vertical,
+    textStyle: TextStyle = TextStyle(),
+    color: Color = Color.White
 ) {
     val spacerModifier =
         if (orientation == Orientation.Vertical) Modifier.height(8.dp) else Modifier.width(8.dp)
     val fill: @Composable () -> Unit = {
-        Spacer(modifier = spacerModifier)
         for (type in types) {
-            Type(name = type.replaceFirstChar { it.uppercase() })
+            Type(name = type.replaceFirstChar { it.uppercase() }, textStyle = textStyle, color = color)
             Spacer(modifier = spacerModifier)
         }
     }
@@ -46,12 +48,18 @@ fun TypeList(
 }
 
 @Composable
-fun Type(modifier: Modifier = Modifier, name: String) {
-    Surface(color = Color.White.copy(alpha = 0.2f), shape = CircleShape, modifier = modifier) {
+fun Type(
+    modifier: Modifier = Modifier,
+    name: String,
+    textStyle: TextStyle = TextStyle(),
+    color: Color = Color.White
+) {
+    Surface(color = color.copy(alpha = 0.2f), shape = CircleShape, modifier = modifier) {
         Text(
+            style = textStyle,
             text = name,
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp),
+            fontWeight = FontWeight.ExtraBold
         )
     }
 }
