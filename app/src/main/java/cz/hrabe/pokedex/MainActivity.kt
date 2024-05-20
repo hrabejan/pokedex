@@ -44,7 +44,9 @@ class MainActivity : ComponentActivity() {
                             }
                         DetailScreen(
                             detailScreenViewModel = detailScreenViewModel
-                        )
+                        ) {
+                            navController.popBackStack(Destination.List, false)
+                        }
                     }
                 }
             }
