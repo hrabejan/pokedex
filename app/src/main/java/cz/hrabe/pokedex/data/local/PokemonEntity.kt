@@ -1,5 +1,7 @@
 package cz.hrabe.pokedex.data.local
 
+import androidx.core.graphics.toColorInt
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import cz.hrabe.pokedex.domain.Pokemon
@@ -12,8 +14,9 @@ data class PokemonEntity(
     val imageUrl: String,
     val height: Int,
     val weight: Int,
-    val tags: List<String>
-//,    val description: String
+    val tags: List<String>,
+    @ColumnInfo(name = "average_color")
+    val averageColor: String?
 )
 
 fun PokemonEntity.toPokemon(): Pokemon {
@@ -23,6 +26,9 @@ fun PokemonEntity.toPokemon(): Pokemon {
         this.imageUrl,
         this.height,
         this.weight,
-        this.tags
+        this.tags,
+        this.averageColor?.let {
+            "#$it".toColorInt()
+        }
     )
 }

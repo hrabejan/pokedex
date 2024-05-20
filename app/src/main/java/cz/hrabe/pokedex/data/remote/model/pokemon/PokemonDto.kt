@@ -15,13 +15,15 @@ data class PokemonDto(
     val weight: Int,
     val types: List<TypeDto>
 )
-fun PokemonDto.toPokemonEntity() : PokemonEntity {
+
+fun PokemonDto.toPokemonEntity(): PokemonEntity {
     return PokemonEntity(
         this.id,
         this.name,
         this.sprites.other.officialArtwork.front_default,
         this.height,
         this.weight,
-        this.types.map { it.type.name }
+        this.types.map { it.type.name },
+        null
     )
 }
