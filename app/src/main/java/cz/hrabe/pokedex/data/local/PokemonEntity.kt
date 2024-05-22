@@ -1,5 +1,6 @@
 package cz.hrabe.pokedex.data.local
 
+import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -30,7 +31,7 @@ fun PokemonEntity.toPokemon(): Pokemon {
         this.weight,
         this.tags,
         this.averageColor?.let {
-            "#$it".toColorInt()
+            Color("#$it".toColorInt())
         },
         this.baseExperience
     )

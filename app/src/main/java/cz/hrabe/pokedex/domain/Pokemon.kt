@@ -1,5 +1,6 @@
 package cz.hrabe.pokedex.domain
 
+import androidx.compose.ui.graphics.Color
 import java.math.RoundingMode
 
 data class Pokemon(
@@ -9,7 +10,7 @@ data class Pokemon(
     val height: Int,
     val weight: Int,
     val types: List<String>,
-    val averageColor: Int?,
+    val averageColor: Color?,
     val baseExperience: Int
 ) {
 
