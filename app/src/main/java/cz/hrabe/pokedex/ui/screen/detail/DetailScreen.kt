@@ -3,6 +3,7 @@ package cz.hrabe.pokedex.ui.screen.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,11 +34,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import cz.hrabe.pokedex.domain.Pokemon
 import cz.hrabe.pokedex.domain.utils.getContrastColor
 import cz.hrabe.pokedex.ui.screen.components.LocalPokemonColors
@@ -113,29 +121,33 @@ fun PokemonDetail(modifier: Modifier = Modifier, pokemon: Pokemon, onBackPressed
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = MaterialTheme.spacing.extraLarge),
-                    pokemon.weight,
-                    pokemon.height
+                    "${pokemon.weightLbs()} lbs (${pokemon.weightKg} kg)",
+                    "${pokemon.heightFtIn()} (${pokemon.heightCm} cm)"
                 )
 
                 InfoParagraph(modifier = Modifier, title = "Info") {
-                    Row(modifier = Modifier.fillMaxWidth(0.5f), verticalAlignment = Alignment.CenterVertically) {
-                        BodyInfoTitle(modifier = Modifier.weight(1f),text = "Base exp")
-                        Text(modifier = Modifier.weight(1f),text = "40exp")
+                    InfoRow(title = "Base exp") {
+                        Text(
+                            text = AnnotatedString("${40 /*pokemon.exp*/} ") + AnnotatedString(
+                                text = "exp",
+                                spanStyle = SpanStyle(fontWeight = FontWeight.ExtraBold)
+                            ), style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    Row(modifier = Modifier.fillMaxWidth(0.5f), verticalAlignment = Alignment.CenterVertically) {
-                        BodyInfoTitle(modifier = Modifier.weight(1f),text = "Species")
-                        Text(modifier = Modifier.weight(1f),text = "Monster")
+                    InfoRow(title = "Species") {
+                        Text(text = "Monster", style = MaterialTheme.typography.bodyMedium)
                     }
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    Row(modifier = Modifier.fillMaxWidth(0.5f), verticalAlignment = Alignment.CenterVertically) {
-                        BodyInfoTitle(modifier = Modifier.weight(1f),text = "Forms count")
-                        Text(modifier = Modifier.weight(1f),text = "6")
+                    InfoRow(title = "Forms count") {
+                        Text(text = "6", style = MaterialTheme.typography.bodyMedium)
                     }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
                 }
 
-                InfoParagraph(modifier = Modifier, title = "Type") {
+                InfoParagraph(
+                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.large),
+                    title = "Type"
+                ) {
                     TypeList(
                         textStyle = MaterialTheme.typography.bodyLarge,
                         types = pokemon.types,
@@ -162,22 +174,17 @@ private fun InfoParagraph(
 }
 
 @Composable
-fun InfoRow(
-    modifier: Modifier = Modifier,
-    titleContent: @Composable () -> Unit,
-    textContent: @Composable () -> Unit
-) {
-    Row(modifier = modifier) {
-
-    }
-}
-
-@Composable
-fun InfoRow(modifier: Modifier = Modifier, title: String, text: String) {
-    Row(modifier = modifier) {
-
-        Text(text = title)
-        Text(text = text)
+fun InfoRow(modifier: Modifier = Modifier, title: String, content: @Composable () -> Unit) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Top
+    ) {
+        BodyInfoTitle(text = title, modifier = Modifier.weight(2f))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
+        Box(modifier = Modifier.weight(3f)) {
+            content()
+        }
     }
 }
 
@@ -220,24 +227,28 @@ private fun DetailTopBar(
 }
 
 @Composable
-private fun BodyInfo(modifier: Modifier = Modifier, weight: Int, height: Int) {
+private fun BodyInfo(modifier: Modifier = Modifier, weight: String, height: String) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
     ) {
         Row(modifier = Modifier.padding(MaterialTheme.spacing.large)) {
-            BodyInfoColumn(Modifier.weight(1f), weight.toString())
-            BodyInfoColumn(Modifier.weight(1f), height.toString())
+            BodyInfoColumn(Modifier.weight(1f), text = weight, title = "Weight")
+            BodyInfoColumn(Modifier.weight(1f), text = height, title = "Height")
         }
     }
 }
 
 @Composable
-private fun BodyInfoColumn(modifier: Modifier, text: String) {
+private fun BodyInfoColumn(modifier: Modifier, title: String, text: String) {
     Column(modifier = modifier) {
-        BodyInfoTitle(text = "Weight")
+        BodyInfoTitle(text = title)
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-        Text(text = text)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.ExtraBold
+        )
     }
 }
 
@@ -245,8 +256,8 @@ private fun BodyInfoColumn(modifier: Modifier, text: String) {
 private fun BodyInfoTitle(modifier: Modifier = Modifier, text: String) {
     Text(
         modifier = modifier, text = text,
-        style = MaterialTheme.typography.bodySmall,
-        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.ExtraBold,
         color = Color.Gray
     )
 }
