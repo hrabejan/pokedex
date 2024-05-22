@@ -128,7 +128,7 @@ fun PokemonDetail(modifier: Modifier = Modifier, pokemon: Pokemon, onBackPressed
                 InfoParagraph(modifier = Modifier, title = "Info") {
                     InfoRow(title = "Base exp") {
                         Text(
-                            text = AnnotatedString("${40 /*pokemon.exp*/} ") + AnnotatedString(
+                            text = AnnotatedString("${pokemon.baseExperience} ") + AnnotatedString(
                                 text = "exp",
                                 spanStyle = SpanStyle(fontWeight = FontWeight.ExtraBold)
                             ), style = MaterialTheme.typography.bodyMedium
