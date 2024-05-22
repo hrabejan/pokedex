@@ -32,7 +32,7 @@ class UpdatePokemonAverageColorUserCase @Inject constructor(
                 if (colorInt != defaultColor) {
                     val fixedColor = colorInt.toUInt().toString(16)
                     withContext(Dispatchers.IO) {
-                        pokemonDao.updateAvgColor(pokemon.id, fixedColor)
+//                        pokemonDao.updateAvgColor(pokemon.id, fixedColor)
                     }
                     Log.d("TAG", "$fixedColor for ${pokemon.name}")
                 } else {

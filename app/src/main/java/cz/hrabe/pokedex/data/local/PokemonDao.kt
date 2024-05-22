@@ -22,7 +22,4 @@ interface PokemonDao {
 
     @Query("DELETE from pokemon")
     fun deleteAll()
-
-    @Query("UPDATE pokemon SET average_color=:color WHERE id=:id")
-    fun updateAvgColor(id: Int, color: String)
 }
