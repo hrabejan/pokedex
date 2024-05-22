@@ -1,6 +1,7 @@
 package cz.hrabe.pokedex.ui.screen.list
 
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,11 +18,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,6 +70,14 @@ fun ListScreen(
     val pokemonPagingItems = listScreenViewModel.pokemon.collectAsLazyPagingItems()
     val perRow = 2
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = pokemonPagingItems.loadState) {
+        if (pokemonPagingItems.loadState.refresh is LoadState.Error) {
+            snackbarHostState.showSnackbar(message = "Error: ${(pokemonPagingItems.loadState.refresh as LoadState.Error).error.message}")
+        }
+    }
+
     Scaffold(modifier = modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
@@ -82,6 +96,8 @@ fun ListScreen(
                     fontWeight = FontWeight.ExtraBold
                 )
             }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent))
+        }, snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }) {
         Box(
             modifier = Modifier
