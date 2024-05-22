@@ -9,6 +9,7 @@ import cz.hrabe.pokedex.data.PokemonRepository
 import cz.hrabe.pokedex.data.PokemonRepositoryImpl
 import cz.hrabe.pokedex.data.local.MIGRATION_1_2
 import cz.hrabe.pokedex.data.local.MIGRATION_2_3
+import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.data.local.PokemonDatabase
 import cz.hrabe.pokedex.data.local.PokemonEntity
@@ -54,6 +55,12 @@ object DataModule {
     @Singleton
     fun providePokemonRepository(pager: Pager<Int, PokemonEntity>): PokemonRepository {
         return PokemonRepositoryImpl(pager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePokemonColorDao(pokemonDatabase: PokemonDatabase) : PokemonColorDao {
+        return pokemonDatabase.pokemonColorsDao
     }
 
 }
