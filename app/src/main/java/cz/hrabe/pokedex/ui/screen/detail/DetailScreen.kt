@@ -265,7 +265,7 @@ private fun BodyInfoTitle(modifier: Modifier = Modifier, text: String) {
 @Preview
 @Composable
 fun PokemonDetailPreview() {
-    PokemonDetail(pokemon = Pokemon(1, "Pikachu", "", 5, 1, listOf("grass", "water"), 0x00FF00)) {}
+    PokemonDetail(pokemon = Pokemon(1, "Pikachu", "", 5, 1, listOf("grass", "water"), 0x00FF00, 110)) {}
 }
 
 @Composable
