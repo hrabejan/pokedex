@@ -4,6 +4,7 @@ import cz.hrabe.pokedex.data.PokemonRepository
 import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.domain.GetPokemonPagingDataUseCase
+import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsContrastColorUseCase
 import cz.hrabe.pokedex.domain.GetSinglePokemonFromDbUseCase
 import cz.hrabe.pokedex.domain.UpdatePokemonsColorsUserCase
@@ -33,4 +34,8 @@ object UseCaseModule {
 
     @Provides
     fun provideGetPokemonsContrastColorUseCase() = GetPokemonsContrastColorUseCase()
+
+    @Provides
+    fun provideGetPokemonsColorsUseCase(pokemonColorDao: PokemonColorDao) =
+        GetPokemonsColorsUseCase(pokemonColorDao)
 }
