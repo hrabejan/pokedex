@@ -4,7 +4,10 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.toColorInt
 import androidx.palette.graphics.Palette
+import cz.hrabe.pokedex.data.local.PokemonColorDao
+import cz.hrabe.pokedex.data.local.PokemonColorEntity
 import cz.hrabe.pokedex.data.local.PokemonDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +16,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UpdatePokemonAverageColorUserCase @Inject constructor(
-    private val pokemonDao: PokemonDao,
+    private val pokemonColorDao: PokemonColorDao,
     private val getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
 ) {
 
@@ -30,11 +33,20 @@ class UpdatePokemonAverageColorUserCase @Inject constructor(
 
                 val colorInt = palette.getDominantColor(defaultColor)
                 if (colorInt != defaultColor) {
-                    val fixedColor = colorInt.toUInt().toString(16)
+                    val resultColorString = "#${colorInt.toUInt().toString(16)}".toColorInt()
+                    val resultColor = Color(resultColorString)
+                    val contrastColor = getPokemonsContrastColorUseCase(resultColor)
+
                     withContext(Dispatchers.IO) {
-//                        pokemonDao.updateAvgColor(pokemon.id, fixedColor)
+                        pokemonColorDao.upsert(
+                            PokemonColorEntity(
+                                pokemon.id,
+                                resultColor,
+                                contrastColor
+                            )
+                        )
                     }
-                    Log.d("TAG", "$fixedColor for ${pokemon.name}")
+                    Log.d("TAG", "$resultColorString for ${pokemon.name}")
                 } else {
                     Log.d("TAG", "Error getting dominant color")
                 }

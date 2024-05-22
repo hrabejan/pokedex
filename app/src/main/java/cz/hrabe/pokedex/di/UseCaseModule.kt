@@ -1,6 +1,7 @@
 package cz.hrabe.pokedex.di
 
 import cz.hrabe.pokedex.data.PokemonRepository
+import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.domain.GetPokemonPagingDataUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsContrastColorUseCase
@@ -25,10 +26,10 @@ object UseCaseModule {
 
     @Provides
     fun provideUpdatePokemonAverageColorUseCase(
-        pokemonDao: PokemonDao,
+        pokemonColorDao: PokemonColorDao,
         getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
     ) =
-        UpdatePokemonAverageColorUserCase(pokemonDao, getPokemonsContrastColorUseCase)
+        UpdatePokemonAverageColorUserCase(pokemonColorDao, getPokemonsContrastColorUseCase)
 
     @Provides
     fun provideGetPokemonsContrastColorUseCase() = GetPokemonsContrastColorUseCase()
