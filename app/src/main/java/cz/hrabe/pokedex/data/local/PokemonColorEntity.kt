@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import cz.hrabe.pokedex.domain.PokemonColors
 
 @Entity("pokemon_color")
 data class PokemonColorEntity(
@@ -15,3 +16,10 @@ data class PokemonColorEntity(
     @ColumnInfo("contrast_color")
     val contrastColor: Color
 )
+
+fun PokemonColorEntity.toPokemonColors(): PokemonColors {
+    return PokemonColors(
+        this.averageColor,
+        this.contrastColor
+    )
+}
