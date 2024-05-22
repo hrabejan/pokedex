@@ -5,9 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import cz.hrabe.pokedex.data.local.converters.ColorConverter
 import cz.hrabe.pokedex.data.local.converters.TagsConverter
 
-@TypeConverters(TagsConverter::class)
+@TypeConverters(TagsConverter::class, ColorConverter::class)
 @Database(entities = [PokemonEntity::class, PokemonColorEntity::class], version = 4)
 abstract class PokemonDatabase : RoomDatabase() {
     abstract val pokemonDao: PokemonDao
