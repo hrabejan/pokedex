@@ -8,14 +8,13 @@ import androidx.core.graphics.toColorInt
 import androidx.palette.graphics.Palette
 import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonColorEntity
-import cz.hrabe.pokedex.data.local.PokemonDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UpdatePokemonAverageColorUserCase @Inject constructor(
+class UpdatePokemonsColorsUserCase @Inject constructor(
     private val pokemonColorDao: PokemonColorDao,
     private val getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
 ) {
