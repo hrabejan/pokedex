@@ -16,7 +16,9 @@ data class PokemonEntity(
     val weight: Int,
     val tags: List<String>,
     @ColumnInfo(name = "average_color")
-    val averageColor: String?
+    val averageColor: String?,
+    @ColumnInfo(name = "base_experience")
+    val baseExperience: Int
 )
 
 fun PokemonEntity.toPokemon(): Pokemon {

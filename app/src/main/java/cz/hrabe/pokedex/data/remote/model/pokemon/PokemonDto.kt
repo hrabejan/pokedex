@@ -15,7 +15,7 @@ data class PokemonDto(
     val weight: Int,
     val types: List<TypeDto>,
     @Json(name = "base_experience")
-    val baseExperience : Int
+    val baseExperience: Int
 )
 
 fun PokemonDto.toPokemonEntity(): PokemonEntity {
@@ -26,6 +26,7 @@ fun PokemonDto.toPokemonEntity(): PokemonEntity {
         this.height,
         this.weight,
         this.types.map { it.type.name },
-        null
+        null,
+        this.baseExperience
     )
 }
