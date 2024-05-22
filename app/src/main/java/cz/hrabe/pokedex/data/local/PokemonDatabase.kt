@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import cz.hrabe.pokedex.data.local.converters.TagsConverter
 
 @TypeConverters(TagsConverter::class)
-@Database(entities = [PokemonEntity::class], version = 3)
+@Database(entities = [PokemonEntity::class, PokemonColorEntity::class], version = 4)
 abstract class PokemonDatabase : RoomDatabase() {
     abstract val pokemonDao: PokemonDao
     abstract val pokemonColorsDao: PokemonColorDao
