@@ -2,6 +2,7 @@ package cz.hrabe.pokedex.domain
 
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import cz.hrabe.pokedex.data.local.PokemonDao
@@ -11,10 +12,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UpdatePokemonAverageColorUserCase @Inject constructor(private val pokemonDao: PokemonDao) {
+class UpdatePokemonAverageColorUserCase @Inject constructor(
+    private val pokemonDao: PokemonDao,
+    private val getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
+) {
 
     suspend operator fun invoke(pokemon: Pokemon, drawable: Drawable) {
-        if (pokemon.averageColor != null) return
 
         CoroutineScope(Dispatchers.Default).launch {
             try {
@@ -30,7 +33,6 @@ class UpdatePokemonAverageColorUserCase @Inject constructor(private val pokemonD
                     val fixedColor = colorInt.toUInt().toString(16)
                     withContext(Dispatchers.IO) {
                         pokemonDao.updateAvgColor(pokemon.id, fixedColor)
-
                     }
                     Log.d("TAG", "$fixedColor for ${pokemon.name}")
                 } else {

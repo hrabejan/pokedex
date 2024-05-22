@@ -145,7 +145,7 @@ fun PokemonItem(
     onImageLoaded: (Drawable) -> Unit = {},
     onClick: (Pokemon) -> Unit
 ) {
-    val avgColor = pokemon.averageColor?.let { Color(it) } ?: MaterialTheme.colorScheme.surface
+    val avgColor = /*pokemon.averageColor ?:*/ MaterialTheme.colorScheme.surface
     val contrastColor = avgColor.getContrastColor()
     PokemonItemCard(modifier = modifier, pokemon = pokemon, color = avgColor, onClick = onClick) {
         ConstraintLayout(

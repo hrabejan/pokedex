@@ -16,8 +16,6 @@ data class PokemonEntity(
     val height: Int,
     val weight: Int,
     val tags: List<String>,
-    @ColumnInfo(name = "average_color")
-    val averageColor: String?,
     @ColumnInfo(name = "base_experience")
     val baseExperience: Int
 )
@@ -30,9 +28,6 @@ fun PokemonEntity.toPokemon(): Pokemon {
         this.height,
         this.weight,
         this.tags,
-        this.averageColor?.let {
-            Color("#$it".toColorInt())
-        },
         this.baseExperience
     )
 }
