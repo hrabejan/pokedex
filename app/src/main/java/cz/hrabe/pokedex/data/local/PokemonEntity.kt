@@ -31,6 +31,7 @@ fun PokemonEntity.toPokemon(): Pokemon {
         this.tags,
         this.averageColor?.let {
             "#$it".toColorInt()
-        }
+        },
+        this.baseExperience
     )
 }

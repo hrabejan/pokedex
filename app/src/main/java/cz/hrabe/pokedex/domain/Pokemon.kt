@@ -9,7 +9,8 @@ data class Pokemon(
     val height: Int,
     val weight: Int,
     val types: List<String>,
-    val averageColor: Int?
+    val averageColor: Int?,
+    val baseExperience: Int
 ) {
 
     val weightKg: Double
