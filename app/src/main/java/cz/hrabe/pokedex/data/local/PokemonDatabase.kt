@@ -11,6 +11,7 @@ import cz.hrabe.pokedex.data.local.converters.TagsConverter
 @Database(entities = [PokemonEntity::class], version = 3)
 abstract class PokemonDatabase : RoomDatabase() {
     abstract val pokemonDao: PokemonDao
+    abstract val pokemonColorsDao: PokemonColorDao
 
     companion object {
         const val NAME = "pokemon_db"
