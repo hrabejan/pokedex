@@ -26,7 +26,6 @@ fun PokemonDto.toPokemonEntity(): PokemonEntity {
         this.height,
         this.weight,
         this.types.map { it.type.name },
-        null,
         this.baseExperience
     )
 }
