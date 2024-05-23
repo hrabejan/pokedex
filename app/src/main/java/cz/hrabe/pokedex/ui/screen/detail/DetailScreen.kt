@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,8 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,11 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import cz.hrabe.pokedex.domain.Pokemon
-import cz.hrabe.pokedex.domain.utils.getContrastColor
-import cz.hrabe.pokedex.ui.screen.components.LocalPokemonColors
-import cz.hrabe.pokedex.ui.screen.components.PokemonColors
+import cz.hrabe.pokedex.domain.PokemonColors
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
 
@@ -70,7 +64,14 @@ fun DetailScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         } else {
-            PokemonDetail(pokemon = uiState.pokemon!!, modifier = modifier.padding(it)) {
+            PokemonDetail(
+                pokemon = uiState.pokemon!!,
+                pokemonColors = uiState.colors ?: PokemonColors(
+                    MaterialTheme.colorScheme.background,
+                    MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = modifier.padding(it)
+            ) {
                 onBackPressed()
             }
         }
@@ -78,83 +79,80 @@ fun DetailScreen(
 }
 
 @Composable
-fun PokemonDetail(modifier: Modifier = Modifier, pokemon: Pokemon, onBackPressed: () -> Unit) {
-    val backgroundColor =
-        pokemon.averageColor?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
-    CompositionLocalProvider(
-        LocalPokemonColors provides PokemonColors(
-            backgroundColor,
-            backgroundColor.getContrastColor()
-        )
+fun PokemonDetail(
+    modifier: Modifier = Modifier,
+    pokemon: Pokemon,
+    pokemonColors: PokemonColors,
+    onBackPressed: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(pokemonColors.averageColor)
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(backgroundColor)
-        ) {
 
-            DetailTopBar(
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large),
-                onBackPressed,
-                pokemon
+        DetailTopBar(
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large),
+            onBackPressed = onBackPressed,
+            pokemon = pokemon,
+            color = pokemonColors.contrastColor
+        )
+
+        Column(
+            modifier = Modifier
+                .clip(
+                    RoundedCornerShape(
+                        topStartPercent = 8,
+                        topEndPercent = 8
+                    )
+                )
+                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxSize()
+                .padding(MaterialTheme.spacing.extraLarge)
+        ) {
+            Text(
+                text = LoremIpsum(25).values.joinToString(
+                    separator = " ",
+                    postfix = "."
+                ) { it })
+
+            BodyInfo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = MaterialTheme.spacing.extraLarge),
+                "${pokemon.weightLbs()} lbs (${pokemon.weightKg} kg)",
+                "${pokemon.heightFtIn()} (${pokemon.heightCm} cm)"
             )
 
-            Column(
-                modifier = Modifier
-                    .clip(
-                        RoundedCornerShape(
-                            topStartPercent = 8,
-                            topEndPercent = 8
-                        )
+            InfoParagraph(modifier = Modifier, title = "Info") {
+                InfoRow(title = "Base exp") {
+                    Text(
+                        text = AnnotatedString("${pokemon.baseExperience} ") + AnnotatedString(
+                            text = "exp",
+                            spanStyle = SpanStyle(fontWeight = FontWeight.ExtraBold)
+                        ), style = MaterialTheme.typography.bodyMedium
                     )
-                    .background(MaterialTheme.colorScheme.surface)
-                    .fillMaxSize()
-                    .padding(MaterialTheme.spacing.extraLarge)
+                }
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                InfoRow(title = "Species") {
+                    Text(text = "Monster", style = MaterialTheme.typography.bodyMedium)
+                }
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                InfoRow(title = "Forms count") {
+                    Text(text = "6", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+
+            InfoParagraph(
+                modifier = Modifier.padding(vertical = MaterialTheme.spacing.large),
+                title = "Type"
             ) {
-                Text(
-                    text = LoremIpsum(25).values.joinToString(
-                        separator = " ",
-                        postfix = "."
-                    ) { it })
-
-                BodyInfo(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = MaterialTheme.spacing.extraLarge),
-                    "${pokemon.weightLbs()} lbs (${pokemon.weightKg} kg)",
-                    "${pokemon.heightFtIn()} (${pokemon.heightCm} cm)"
+                TypeList(
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    types = pokemon.types,
+                    orientation = Orientation.Horizontal,
+                    color = Color.Gray
                 )
-
-                InfoParagraph(modifier = Modifier, title = "Info") {
-                    InfoRow(title = "Base exp") {
-                        Text(
-                            text = AnnotatedString("${pokemon.baseExperience} ") + AnnotatedString(
-                                text = "exp",
-                                spanStyle = SpanStyle(fontWeight = FontWeight.ExtraBold)
-                            ), style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    InfoRow(title = "Species") {
-                        Text(text = "Monster", style = MaterialTheme.typography.bodyMedium)
-                    }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    InfoRow(title = "Forms count") {
-                        Text(text = "6", style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-
-                InfoParagraph(
-                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.large),
-                    title = "Type"
-                ) {
-                    TypeList(
-                        textStyle = MaterialTheme.typography.bodyLarge,
-                        types = pokemon.types,
-                        orientation = Orientation.Horizontal,
-                        color = Color.Gray
-                    )
-                }
             }
         }
     }
@@ -192,6 +190,7 @@ fun InfoRow(modifier: Modifier = Modifier, title: String, content: @Composable (
 private fun DetailTopBar(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
+    color: Color,
     pokemon: Pokemon
 ) {
     Box(
@@ -212,13 +211,13 @@ private fun DetailTopBar(
                 modifier = Modifier.align(Alignment.Center),
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back icon",
-                tint = LocalPokemonColors.current.contrastColor
+                tint = color
             )
         }
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = pokemon.name.replaceFirstChar { it.uppercase() },
-            color = LocalPokemonColors.current.contrastColor,
+            color = color,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold
@@ -265,7 +264,17 @@ private fun BodyInfoTitle(modifier: Modifier = Modifier, text: String) {
 @Preview
 @Composable
 fun PokemonDetailPreview() {
-    PokemonDetail(pokemon = Pokemon(1, "Pikachu", "", 5, 1, listOf("grass", "water"), 0x00FF00, 110)) {}
+    PokemonDetail(
+        pokemon = Pokemon(
+            1,
+            "Pikachu",
+            "",
+            5,
+            1,
+            listOf("grass", "water"),
+            110
+        ), pokemonColors = PokemonColors(averageColor = Color.Black, Color.White)
+    ) {}
 }
 
 @Composable
