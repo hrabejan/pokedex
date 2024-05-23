@@ -1,7 +1,6 @@
 package cz.hrabe.pokedex.ui.screen.list
 
 import android.graphics.drawable.Drawable
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,15 +19,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +39,7 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,12 +55,17 @@ import coil.request.ImageRequest
 import cz.hrabe.pokedex.R
 import cz.hrabe.pokedex.domain.Pokemon
 import cz.hrabe.pokedex.domain.PokemonColors
-import cz.hrabe.pokedex.domain.utils.getContrastColor
 import cz.hrabe.pokedex.ui.screen.components.NumberHeader
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
-import kotlinx.coroutines.flow.Flow
 
+/**
+ * Screen that lists Pokemon that were locally cached or fetched via API
+ * @param onClick Lambda invoked when a Pokemon item in the listed was clicked on.
+ *
+ * The Pokemon is provided as a parameter.
+ *
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
@@ -72,13 +74,19 @@ fun ListScreen(
     onClick: (Pokemon) -> Unit
 ) {
     val pokemonPagingItems = listScreenViewModel.pokemon.collectAsLazyPagingItems()
+
+    //Items per one row
     val perRow = 2
 
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
+    /*
+        When loadState changes, see if it is an error.
+        If so, display a snackbar message
+     */
     LaunchedEffect(key1 = pokemonPagingItems.loadState) {
         if (pokemonPagingItems.loadState.refresh is LoadState.Error) {
-            snackbarHostState.showSnackbar(message = "Error: ${(pokemonPagingItems.loadState.refresh as LoadState.Error).error.message}")
+            snackBarHostState.showSnackbar(message = "Error: ${(pokemonPagingItems.loadState.refresh as LoadState.Error).error.message}")
         }
     }
 
@@ -95,14 +103,14 @@ fun ListScreen(
         topBar = {
             TopAppBar(title = {
                 Text(
-                    text = "Pokedex",
+                    text = stringResource(id = R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.ExtraBold
                 )
             }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent))
         }, snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        }) {paddingValues->
+            SnackbarHost(hostState = snackBarHostState)
+        }) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,24 +129,23 @@ fun ListScreen(
                 ) {
                     items(
                         count = pokemonPagingItems.itemCount,
-                        key = pokemonPagingItems.itemKey { it.id }) { index ->
-                        val pokemon = pokemonPagingItems[index]
-                        pokemon?.let {
-                            val colors by listScreenViewModel.getPokemonsColors(it).collectAsState(
-                                initial = PokemonColors(
-                                    averageColor = MaterialTheme.colorScheme.surface,
-                                    contrastColor = MaterialTheme.colorScheme.onSurface
-                                )
-                            )
+                        key = pokemonPagingItems.itemKey { it.pokemon.id }) { index ->
+
+                        val pokemonWithColors = pokemonPagingItems[index]
+
+                        pokemonWithColors?.let { pokemonWColors ->
                             PokemonItem(
-                                pokemon = it,
+                                pokemon = pokemonWColors.pokemon,
                                 modifier = Modifier
                                     .fillMaxWidth(1f / perRow)
                                     .wrapContentHeight(), onClick = onClick,
                                 onImageLoaded = {
-                                    listScreenViewModel.onImageLoaded(pokemon, it)
+                                    listScreenViewModel.onImageLoaded(pokemonWColors.pokemon, it)
                                 },
-                                pokemonColors = colors
+                                pokemonColors = pokemonWColors.pokemonColors ?: PokemonColors(
+                                    MaterialTheme.colorScheme.surface,
+                                    MaterialTheme.colorScheme.onSurface
+                                )
                             )
                         }
                     }
@@ -157,7 +164,12 @@ fun PokemonItem(
     pokemonColors: PokemonColors,
     onClick: (Pokemon) -> Unit
 ) {
-    PokemonItemCard(modifier = modifier, pokemon = pokemon, color = pokemonColors.averageColor, onClick = onClick) {
+    PokemonItemCard(
+        modifier = modifier,
+        pokemon = pokemon,
+        color = pokemonColors.averageColor,
+        onClick = onClick
+    ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -262,6 +274,15 @@ fun PokemonItemCard(
     }
 }
 
+/**
+ * Modifier extension function which helps reduce boilerplate while drawing a decorative pokeball in composable backgrounds.
+ *
+ * @param color color of the pokeball, will be copied and have the [alpha] applied to it.
+ * @param alpha alpha of the [color] provided.
+ * @param getSize should return the desired size of the pokeball drawn, passes the pokeballs aspect ratio to help avoid distortion.
+ * @param getOffset should return the desired offset of the pokeball, given it starts at coordinates (0,0) in the [DrawScope].
+ * Passes a size value specified in the [getSize] lambda.
+ */
 @Composable
 fun Modifier.drawPokeballBehind(
     color: Color = Color.Black,
@@ -269,15 +290,20 @@ fun Modifier.drawPokeballBehind(
     getSize: DrawScope.(heightRatio: Float, widthRatio: Float) -> Size,
     getOffset: DrawScope.(size: Size) -> Offset
 ): Modifier {
-
+    //Load pokeball resource
     val painter = painterResource(id = R.drawable.pokeball)
     return this then Modifier.drawBehind {
         with(painter) {
+            //Calculate width/height ratio
             val heightRatio = intrinsicSize.height / intrinsicSize.width
             val widthRatio = intrinsicSize.width / intrinsicSize.height
+
+            //Calculate new size via lambda
             val newSize = getSize(heightRatio, widthRatio)
+
             val offset = getOffset(newSize)
             translate(left = offset.x, top = offset.y) {
+                //Draw with specified size, color and alpha
                 draw(
                     size = Size(newSize.width, newSize.height),
                     colorFilter = ColorFilter.tint(color),
