@@ -25,4 +25,7 @@ interface PokemonDao {
 
     @Query("SELECT * FROM pokemon LEFT JOIN pokemon_color ON pokemon.id = pokemon_color.pokemon_id")
     fun withColorPagingSource(): PagingSource<Int, PokemonWithColorsEntity>
+
+    @Query("SELECT * FROM pokemon LEFT JOIN pokemon_color ON pokemon.id = pokemon_color.pokemon_id WHERE pokemon.id = :pokemonId")
+    fun getPokemonWithColor(pokemonId: Int) : Flow<PokemonWithColorsEntity>
 }
