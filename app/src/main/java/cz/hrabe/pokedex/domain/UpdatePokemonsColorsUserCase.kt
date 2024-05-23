@@ -9,6 +9,7 @@ import androidx.core.graphics.toColorInt
 import androidx.palette.graphics.Palette
 import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonColorEntity
+import cz.hrabe.pokedex.domain.model.Pokemon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

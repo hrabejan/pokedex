@@ -3,13 +3,12 @@ package cz.hrabe.pokedex.data
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.map
-import cz.hrabe.pokedex.data.local.PokemonColorEntity
 import cz.hrabe.pokedex.data.local.PokemonEntity
 import cz.hrabe.pokedex.data.local.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.local.toPokemon
 import cz.hrabe.pokedex.data.local.toPokemonWithColors
-import cz.hrabe.pokedex.domain.Pokemon
-import cz.hrabe.pokedex.domain.PokemonWithColors
+import cz.hrabe.pokedex.domain.model.Pokemon
+import cz.hrabe.pokedex.domain.model.PokemonWithColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

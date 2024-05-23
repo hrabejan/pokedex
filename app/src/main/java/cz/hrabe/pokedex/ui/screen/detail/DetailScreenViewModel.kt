@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.GetSinglePokemonFromDbUseCase
-import cz.hrabe.pokedex.domain.Pokemon
-import cz.hrabe.pokedex.domain.PokemonColors
+import cz.hrabe.pokedex.domain.model.Pokemon
+import cz.hrabe.pokedex.domain.model.PokemonColors
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import cz.hrabe.pokedex.domain.PokemonColors
+import cz.hrabe.pokedex.domain.model.PokemonColors
 
 @Entity("pokemon_color")
 data class PokemonColorEntity(

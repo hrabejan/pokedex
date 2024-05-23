@@ -17,7 +17,6 @@ import cz.hrabe.pokedex.data.local.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.remote.PokemonApi
 import cz.hrabe.pokedex.data.remote.PokemonRemoteMediator
 import cz.hrabe.pokedex.data.remote.PokemonWithColorsRemoteMediator
-import cz.hrabe.pokedex.domain.PokemonWithColors
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

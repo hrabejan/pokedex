@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,8 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
-import cz.hrabe.pokedex.domain.Pokemon
-import cz.hrabe.pokedex.domain.PokemonColors
+import cz.hrabe.pokedex.domain.model.Pokemon
+import cz.hrabe.pokedex.domain.model.PokemonColors
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
 

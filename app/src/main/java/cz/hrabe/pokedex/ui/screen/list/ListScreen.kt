@@ -53,8 +53,8 @@ import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.hrabe.pokedex.R
-import cz.hrabe.pokedex.domain.Pokemon
-import cz.hrabe.pokedex.domain.PokemonColors
+import cz.hrabe.pokedex.domain.model.Pokemon
+import cz.hrabe.pokedex.domain.model.PokemonColors
 import cz.hrabe.pokedex.ui.screen.components.NumberHeader
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing

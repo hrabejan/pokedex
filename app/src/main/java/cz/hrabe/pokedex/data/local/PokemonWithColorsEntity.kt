@@ -1,7 +1,7 @@
 package cz.hrabe.pokedex.data.local
 
 import androidx.room.Embedded
-import cz.hrabe.pokedex.domain.PokemonWithColors
+import cz.hrabe.pokedex.domain.model.PokemonWithColors
 
 data class PokemonWithColorsEntity(
     @Embedded val pokemonEntity: PokemonEntity,

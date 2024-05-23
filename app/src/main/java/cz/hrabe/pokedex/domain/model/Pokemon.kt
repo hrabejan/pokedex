@@ -1,6 +1,5 @@
-package cz.hrabe.pokedex.domain
+package cz.hrabe.pokedex.domain.model
 
-import androidx.compose.ui.graphics.Color
 import java.math.RoundingMode
 
 data class Pokemon(

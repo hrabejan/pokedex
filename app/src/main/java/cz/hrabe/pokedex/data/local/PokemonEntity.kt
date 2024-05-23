@@ -1,11 +1,9 @@
 package cz.hrabe.pokedex.data.local
 
-import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.toColorInt
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import cz.hrabe.pokedex.domain.Pokemon
+import cz.hrabe.pokedex.domain.model.Pokemon
 
 @Entity("pokemon")
 data class PokemonEntity(
