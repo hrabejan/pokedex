@@ -27,9 +27,6 @@ class ListScreenViewModel @Inject constructor(
 
     val pokemon = getPokemonPagingDataUseCase().cachedIn(viewModelScope)
 
-    fun getPokemonsColors(pokemon: Pokemon): Flow<PokemonColors> =
-        getPokemonsColorsUseCase(pokemon.id)
-
     fun onImageLoaded(pokemon: Pokemon, drawable: Drawable) {
         viewModelScope.launch {
             updatePokemonsColorsUserCase(pokemon, drawable)
