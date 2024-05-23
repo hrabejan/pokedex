@@ -5,8 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import cz.hrabe.pokedex.data.local.PokemonDatabase
-import cz.hrabe.pokedex.data.local.PokemonEntity
-import cz.hrabe.pokedex.data.local.PokemonWithColorsEntity
+import cz.hrabe.pokedex.data.local.model.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.remote.model.pokemon.toPokemonEntity
 
 @OptIn(ExperimentalPagingApi::class)

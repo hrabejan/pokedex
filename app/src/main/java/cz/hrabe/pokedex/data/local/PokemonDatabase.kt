@@ -1,13 +1,13 @@
 package cz.hrabe.pokedex.data.local
 
 import androidx.room.Database
-import androidx.room.DeleteColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import cz.hrabe.pokedex.data.local.converters.TagsConverter
+import cz.hrabe.pokedex.data.local.model.PokemonColorEntity
+import cz.hrabe.pokedex.data.local.model.PokemonEntity
 
 @TypeConverters(TagsConverter::class)
 @Database(

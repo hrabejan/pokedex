@@ -1,7 +1,7 @@
 package cz.hrabe.pokedex.domain
 
 import cz.hrabe.pokedex.data.local.PokemonColorDao
-import cz.hrabe.pokedex.data.local.toPokemonColors
+import cz.hrabe.pokedex.data.local.model.toPokemonColors
 import cz.hrabe.pokedex.domain.model.PokemonColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

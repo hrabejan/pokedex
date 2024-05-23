@@ -4,6 +4,8 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import cz.hrabe.pokedex.data.local.model.PokemonEntity
+import cz.hrabe.pokedex.data.local.model.PokemonWithColorsEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

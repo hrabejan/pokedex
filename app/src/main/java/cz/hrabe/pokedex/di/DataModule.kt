@@ -12,8 +12,8 @@ import cz.hrabe.pokedex.data.local.MIGRATION_2_3
 import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.data.local.PokemonDatabase
-import cz.hrabe.pokedex.data.local.PokemonEntity
-import cz.hrabe.pokedex.data.local.PokemonWithColorsEntity
+import cz.hrabe.pokedex.data.local.model.PokemonEntity
+import cz.hrabe.pokedex.data.local.model.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.remote.PokemonApi
 import cz.hrabe.pokedex.data.remote.PokemonRemoteMediator
 import cz.hrabe.pokedex.data.remote.PokemonWithColorsRemoteMediator

@@ -1,4 +1,4 @@
-package cz.hrabe.pokedex.data.local
+package cz.hrabe.pokedex.data.local.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo

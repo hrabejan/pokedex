@@ -2,7 +2,7 @@ package cz.hrabe.pokedex.data.remote.model.pokemon
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import cz.hrabe.pokedex.data.local.PokemonEntity
+import cz.hrabe.pokedex.data.local.model.PokemonEntity
 import cz.hrabe.pokedex.data.remote.model.pokemon.sprite.Sprites
 import cz.hrabe.pokedex.data.remote.model.pokemon.type.TypeDto
 

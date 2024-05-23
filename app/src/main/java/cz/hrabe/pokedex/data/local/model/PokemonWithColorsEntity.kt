@@ -1,4 +1,4 @@
-package cz.hrabe.pokedex.data.local
+package cz.hrabe.pokedex.data.local.model
 
 import androidx.room.Embedded
 import cz.hrabe.pokedex.domain.model.PokemonWithColors
