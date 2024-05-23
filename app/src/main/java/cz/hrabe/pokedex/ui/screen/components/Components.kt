@@ -17,18 +17,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cz.hrabe.pokedex.ui.theme.spacing
 
+/**
+ * Element that can display pokemon's [Type]s (traits) in a list or a row
+ * @param types pokemon's [Type] names
+ * @param orientation specifies whether the list should be a row or a column
+ * @param spacing specifies the spacing between the individual [Type]s
+ * @param color color of the individual [Type]s
+ */
 @Composable
 fun TypeList(
     modifier: Modifier = Modifier,
     types: List<String>,
     orientation: Orientation = Orientation.Vertical,
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = TextStyle(fontWeight = FontWeight.ExtraBold),
+    spacing: Dp = MaterialTheme.spacing.medium,
     color: Color = Color.White
 ) {
     val spacerModifier =
-        if (orientation == Orientation.Vertical) Modifier.height(8.dp) else Modifier.width(8.dp)
+        if (orientation == Orientation.Vertical) Modifier.height(spacing) else Modifier.width(spacing)
     val fill: @Composable () -> Unit = {
         for (type in types) {
             Type(
@@ -50,11 +60,17 @@ fun TypeList(
     }
 }
 
+
+/**
+ * A pill-like element used to display pokemon's single trait
+ */
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
     name: String,
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = TextStyle(
+        fontWeight = FontWeight.ExtraBold
+    ),
     color: Color = Color.White
 ) {
     Surface(color = color.copy(alpha = 0.2f), shape = CircleShape, modifier = modifier) {
@@ -62,7 +78,6 @@ fun Type(
             style = textStyle,
             text = name,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp),
-            fontWeight = FontWeight.ExtraBold
         )
     }
 }
