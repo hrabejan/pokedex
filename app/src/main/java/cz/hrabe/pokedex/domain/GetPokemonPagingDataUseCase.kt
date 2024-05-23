@@ -11,5 +11,5 @@ class GetPokemonPagingDataUseCase @Inject constructor(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    operator fun invoke() = pokemonRepository.fetchPokemon().flowOn(defaultDispatcher)
+    operator fun invoke() = pokemonRepository.fetchPokemonWithColors().flowOn(defaultDispatcher)
 }
