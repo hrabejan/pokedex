@@ -3,6 +3,7 @@ package cz.hrabe.pokedex.domain
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColorInt
 import androidx.palette.graphics.Palette
@@ -40,8 +41,8 @@ class UpdatePokemonsColorsUserCase @Inject constructor(
                         pokemonColorDao.upsert(
                             PokemonColorEntity(
                                 pokemon.id,
-                                resultColor,
-                                contrastColor
+                                resultColor.toArgb(),
+                                contrastColor.toArgb()
                             )
                         )
                     }

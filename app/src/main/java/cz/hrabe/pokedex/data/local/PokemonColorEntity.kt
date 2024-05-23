@@ -12,14 +12,14 @@ data class PokemonColorEntity(
     @ColumnInfo("pokemon_id")
     val pokemonId: Int,
     @ColumnInfo("average_color")
-    val averageColor: Color,
+    val averageColor: Int,
     @ColumnInfo("contrast_color")
-    val contrastColor: Color
+    val contrastColor: Int
 )
 
 fun PokemonColorEntity.toPokemonColors(): PokemonColors {
     return PokemonColors(
-        this.averageColor,
-        this.contrastColor
+        Color(this.averageColor),
+        Color(this.contrastColor)
     )
 }
