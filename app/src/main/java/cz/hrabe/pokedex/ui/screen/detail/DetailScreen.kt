@@ -64,8 +64,8 @@ fun DetailScreen(
             }
         } else {
             PokemonDetail(
-                pokemon = uiState.pokemon!!,
-                pokemonColors = uiState.colors ?: PokemonColors(
+                pokemon = uiState.pokemon!!.pokemon,
+                pokemonColors = uiState.pokemon!!.pokemonColors ?: PokemonColors(
                     MaterialTheme.colorScheme.background,
                     MaterialTheme.colorScheme.onBackground
                 ),

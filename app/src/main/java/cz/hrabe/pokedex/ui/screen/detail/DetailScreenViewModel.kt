@@ -6,6 +6,7 @@ import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.GetSinglePokemonFromDbUseCase
 import cz.hrabe.pokedex.domain.model.Pokemon
 import cz.hrabe.pokedex.domain.model.PokemonColors
+import cz.hrabe.pokedex.domain.model.PokemonWithColors
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -21,22 +22,18 @@ import kotlinx.coroutines.launch
 class DetailScreenViewModel @AssistedInject constructor(
     @Assisted private val id: Int,
     private val getSinglePokemonFromDbUseCase: GetSinglePokemonFromDbUseCase,
-    private val getPokemonsColorsUseCase: GetPokemonsColorsUseCase
 ) : ViewModel() {
 
     private val _detailUiState = MutableStateFlow(DetailUiState())
     val detailUiState: StateFlow<DetailUiState> = _detailUiState
 
     init {
+        //On ViewModels initialization collect the Pokemon via id provided.
         viewModelScope.launch {
             launch {
                 getSinglePokemonFromDbUseCase(id).collectLatest { pokemon ->
                     _detailUiState.update {
                         it.copy(pokemon = pokemon)
-                    }
-                    val colors = getPokemonsColorsUseCase(pokemon.id).first()
-                    _detailUiState.update {
-                        it.copy(colors = colors)
                     }
                 }
             }
@@ -50,4 +47,4 @@ class DetailScreenViewModel @AssistedInject constructor(
     }
 }
 
-data class DetailUiState(val pokemon: Pokemon? = null, val colors: PokemonColors? = null)
+data class DetailUiState(val pokemon: PokemonWithColors? = null)
