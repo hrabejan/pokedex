@@ -27,6 +27,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +57,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.hrabe.pokedex.R
 import cz.hrabe.pokedex.domain.Pokemon
+import cz.hrabe.pokedex.domain.PokemonColors
 import cz.hrabe.pokedex.domain.utils.getContrastColor
 import cz.hrabe.pokedex.ui.screen.components.NumberHeader
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,11 +102,11 @@ fun ListScreen(
             }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent))
         }, snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
-        }) {
+        }) {paddingValues->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
         ) {
             if (pokemonPagingItems.loadState.refresh is LoadState.Loading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -120,6 +124,12 @@ fun ListScreen(
                         key = pokemonPagingItems.itemKey { it.id }) { index ->
                         val pokemon = pokemonPagingItems[index]
                         pokemon?.let {
+                            val colors by listScreenViewModel.getPokemonsColors(it).collectAsState(
+                                initial = PokemonColors(
+                                    averageColor = MaterialTheme.colorScheme.surface,
+                                    contrastColor = MaterialTheme.colorScheme.onSurface
+                                )
+                            )
                             PokemonItem(
                                 pokemon = it,
                                 modifier = Modifier
@@ -127,7 +137,8 @@ fun ListScreen(
                                     .wrapContentHeight(), onClick = onClick,
                                 onImageLoaded = {
                                     listScreenViewModel.onImageLoaded(pokemon, it)
-                                }
+                                },
+                                pokemonColors = colors
                             )
                         }
                     }
@@ -143,11 +154,10 @@ fun PokemonItem(
     pokemon: Pokemon,
     modifier: Modifier = Modifier,
     onImageLoaded: (Drawable) -> Unit = {},
+    pokemonColors: PokemonColors,
     onClick: (Pokemon) -> Unit
 ) {
-    val avgColor = /*pokemon.averageColor ?:*/ MaterialTheme.colorScheme.surface
-    val contrastColor = avgColor.getContrastColor()
-    PokemonItemCard(modifier = modifier, pokemon = pokemon, color = avgColor, onClick = onClick) {
+    PokemonItemCard(modifier = modifier, pokemon = pokemon, color = pokemonColors.averageColor, onClick = onClick) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -171,7 +181,7 @@ fun PokemonItem(
                 style = TextStyle(
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    color = contrastColor
+                    color = pokemonColors.contrastColor
                 ),
                 modifier = Modifier
                     .constrainAs(name) {
@@ -189,7 +199,7 @@ fun PokemonItem(
                 }
                 .zIndex(2f),
                 textStyle = TextStyle(
-                    color = contrastColor,
+                    color = pokemonColors.contrastColor,
                     fontSize = 8.sp
                 ))
             AsyncImage(
