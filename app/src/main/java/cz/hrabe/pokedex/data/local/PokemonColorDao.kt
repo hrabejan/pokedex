@@ -15,5 +15,5 @@ interface PokemonColorDao {
     fun deleteAll()
 
     @Query("SELECT * FROM pokemon_color WHERE pokemon_id=:pokemonId")
-    fun getPokemonColor(pokemonId: Int): Flow<PokemonColorEntity>
+    fun getPokemonColor(pokemonId: Int): Flow<PokemonColorEntity?>
 }
