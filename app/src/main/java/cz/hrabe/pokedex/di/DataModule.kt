@@ -13,8 +13,11 @@ import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.data.local.PokemonDatabase
 import cz.hrabe.pokedex.data.local.PokemonEntity
+import cz.hrabe.pokedex.data.local.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.remote.PokemonApi
 import cz.hrabe.pokedex.data.remote.PokemonRemoteMediator
+import cz.hrabe.pokedex.data.remote.PokemonWithColorsRemoteMediator
+import cz.hrabe.pokedex.domain.PokemonWithColors
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +35,7 @@ object DataModule {
     fun providePokemonDatabase(@ApplicationContext context: Context): PokemonDatabase {
         return Room.databaseBuilder(context, PokemonDatabase::class.java, PokemonDatabase.NAME)
             .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -53,13 +57,29 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun providePokemonRepository(pager: Pager<Int, PokemonEntity>): PokemonRepository {
-        return PokemonRepositoryImpl(pager)
+    fun providePokemonWithColorsPager(
+        pokemonDatabase: PokemonDatabase,
+        pokemonApi: PokemonApi
+    ): Pager<Int, PokemonWithColorsEntity> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { pokemonDatabase.pokemonDao.withColorPagingSource() },
+            remoteMediator = PokemonWithColorsRemoteMediator(pokemonApi, pokemonDatabase)
+        )
     }
 
     @Provides
     @Singleton
-    fun providePokemonColorDao(pokemonDatabase: PokemonDatabase) : PokemonColorDao {
+    fun providePokemonRepository(
+        pager: Pager<Int, PokemonEntity>,
+        colorPager: Pager<Int, PokemonWithColorsEntity>
+    ): PokemonRepository {
+        return PokemonRepositoryImpl(pager, colorPager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePokemonColorDao(pokemonDatabase: PokemonDatabase): PokemonColorDao {
         return pokemonDatabase.pokemonColorsDao
     }
 
