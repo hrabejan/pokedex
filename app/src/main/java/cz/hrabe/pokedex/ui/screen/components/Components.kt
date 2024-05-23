@@ -18,7 +18,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun TypeList(
@@ -32,7 +31,11 @@ fun TypeList(
         if (orientation == Orientation.Vertical) Modifier.height(8.dp) else Modifier.width(8.dp)
     val fill: @Composable () -> Unit = {
         for (type in types) {
-            Type(name = type.replaceFirstChar { it.uppercase() }, textStyle = textStyle, color = color)
+            Type(
+                name = type.replaceFirstChar { it.uppercase() },
+                textStyle = textStyle,
+                color = color
+            )
             Spacer(modifier = spacerModifier)
         }
     }
@@ -64,17 +67,29 @@ fun Type(
     }
 }
 
+
+/**
+ * Element used to display Pokemon's identifier [number].
+ * The number starts with a '#' character and has up to two leading zeros depending on the number of digits.
+ *
+ * @param number Pokemon's identifier
+ */
 @Composable
-fun NumberHeader(modifier: Modifier, number: Int) {
+fun PokemonNumber(
+    modifier: Modifier,
+    number: Int,
+    textStyle: TextStyle = TextStyle(
+        color = Color.Black.copy(alpha = 0.2f),
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+    ),
+    textAlign: TextAlign = TextAlign.End
+) {
     val numberText = number.toString().padStart(3, '0')
     Text(
         text = "#$numberText",
-        textAlign = TextAlign.End,
-        style = TextStyle(
-            color = Color.Black.copy(alpha = 0.2f),
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize
-        ),
+        textAlign = textAlign,
+        style = textStyle,
         modifier = modifier
     )
 }

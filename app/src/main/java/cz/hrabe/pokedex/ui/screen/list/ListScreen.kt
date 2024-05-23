@@ -55,7 +55,7 @@ import coil.request.ImageRequest
 import cz.hrabe.pokedex.R
 import cz.hrabe.pokedex.domain.model.Pokemon
 import cz.hrabe.pokedex.domain.model.PokemonColors
-import cz.hrabe.pokedex.ui.screen.components.NumberHeader
+import cz.hrabe.pokedex.ui.screen.components.PokemonNumber
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
 
@@ -177,7 +177,7 @@ fun PokemonItem(
         ) {
             val (number, col, name, image) = createRefs()
 
-            NumberHeader(number = pokemon.id,
+            PokemonNumber(number = pokemon.id,
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(number) {
