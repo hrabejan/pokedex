@@ -46,6 +46,8 @@ import cz.hrabe.pokedex.ui.theme.spacing
 
 /**
  * Detail screen containing more extensive information about a Pokemon
+ *
+ * @param onBackPressed back button callback
  */
 @Composable
 fun DetailScreen(
@@ -57,6 +59,7 @@ fun DetailScreen(
     val uiState by detailScreenViewModel.detailUiState.collectAsState()
 
     Scaffold {
+        //Display a progress indicator if the Pokemon is not yet present
         if (uiState.pokemon == null) {
             Box(
                 modifier = modifier
@@ -68,6 +71,7 @@ fun DetailScreen(
         } else {
             PokemonDetail(
                 pokemon = uiState.pokemon!!.pokemon,
+                //Provide default surface theme colors if pokemon colors do not exist
                 pokemonColors = uiState.pokemon!!.pokemonColors ?: PokemonColors(
                     MaterialTheme.colorScheme.background,
                     MaterialTheme.colorScheme.onBackground
@@ -96,8 +100,8 @@ fun PokemonDetail(
         DetailTopBar(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large),
             onBackPressed = onBackPressed,
-            pokemon = pokemon,
-            color = pokemonColors.contrastColor
+            pokemonName = pokemon.name,
+            contentColor = pokemonColors.contrastColor
         )
 
         Column(
@@ -126,7 +130,7 @@ fun PokemonDetail(
                 "${pokemon.heightFtIn()} (${pokemon.heightCm} cm)"
             )
 
-            InfoParagraph(modifier = Modifier, title = "Info") {
+            InfoSection(modifier = Modifier, title = "Info") {
                 InfoRow(title = "Base exp") {
                     Text(
                         text = AnnotatedString("${pokemon.baseExperience} ") + AnnotatedString(
@@ -145,7 +149,7 @@ fun PokemonDetail(
                 }
             }
 
-            InfoParagraph(
+            InfoSection(
                 modifier = Modifier.padding(vertical = MaterialTheme.spacing.large),
                 title = "Type"
             ) {
@@ -160,8 +164,15 @@ fun PokemonDetail(
     }
 }
 
+/**
+ * Element describing a specific section of information.
+ * Contains a title header at the top and section's content below it.
+ *
+ * @param title header text
+ * @param content content below the header
+ */
 @Composable
-private fun InfoParagraph(
+private fun InfoSection(
     modifier: Modifier = Modifier,
     title: String,
     content: @Composable () -> Unit
@@ -173,6 +184,14 @@ private fun InfoParagraph(
     }
 }
 
+/**
+ * Row meant mostly for text based information.
+ * Displays information's title at the start and the content on it's right.
+ * The alignment of this row's content is Start/Top.
+ *
+ * @param title info's title
+ * @param content content to be displayed to the right of title
+ */
 @Composable
 fun InfoRow(modifier: Modifier = Modifier, title: String, content: @Composable () -> Unit) {
     Row(
@@ -180,7 +199,7 @@ fun InfoRow(modifier: Modifier = Modifier, title: String, content: @Composable (
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Top
     ) {
-        BodyInfoTitle(text = title, modifier = Modifier.weight(2f))
+        InfoItemTitle(text = title, modifier = Modifier.weight(2f))
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
         Box(modifier = Modifier.weight(3f)) {
             content()
@@ -188,12 +207,21 @@ fun InfoRow(modifier: Modifier = Modifier, title: String, content: @Composable (
     }
 }
 
+/**
+ * Details screen's top bar
+ *
+ * Displays the name of a Pokemon and a back button.
+ *
+ * @param contentColor the color of content such as the name and back button
+ * @param pokemonName Pokemon's name
+ * @param onBackPressed back button callback
+ */
 @Composable
 private fun DetailTopBar(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    color: Color,
-    pokemon: Pokemon
+    contentColor: Color,
+    pokemonName: String
 ) {
     Box(
         modifier = modifier
@@ -213,13 +241,13 @@ private fun DetailTopBar(
                 modifier = Modifier.align(Alignment.Center),
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back icon",
-                tint = color
+                tint = contentColor
             )
         }
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = pokemon.name.replaceFirstChar { it.uppercase() },
-            color = color,
+            text = pokemonName.replaceFirstChar { it.uppercase() },
+            color = contentColor,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold
@@ -227,6 +255,13 @@ private fun DetailTopBar(
     }
 }
 
+/**
+ * A card with the specific purpose of displaying pokemon's weight and height.
+ * Draws a row containing two equally sized columns inside it that show a height/weight with a respective title above them.
+ *
+ * @param weight pokemon's weight
+ * @param height pokemon's height
+ */
 @Composable
 private fun BodyInfo(modifier: Modifier = Modifier, weight: String, height: String) {
     Card(
@@ -240,10 +275,13 @@ private fun BodyInfo(modifier: Modifier = Modifier, weight: String, height: Stri
     }
 }
 
+/**
+ * A single column containing a title at the top and text below it
+ */
 @Composable
 private fun BodyInfoColumn(modifier: Modifier, title: String, text: String) {
     Column(modifier = modifier) {
-        BodyInfoTitle(text = title)
+        InfoItemTitle(text = title)
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         Text(
             text = text,
@@ -254,7 +292,7 @@ private fun BodyInfoColumn(modifier: Modifier, title: String, text: String) {
 }
 
 @Composable
-private fun BodyInfoTitle(modifier: Modifier = Modifier, text: String) {
+private fun InfoItemTitle(modifier: Modifier = Modifier, text: String) {
     Text(
         modifier = modifier, text = text,
         style = MaterialTheme.typography.bodyMedium,

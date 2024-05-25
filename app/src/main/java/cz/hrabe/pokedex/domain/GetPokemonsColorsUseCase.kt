@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.map
 
 class GetPokemonsColorsUseCase(private val pokemonColorDao: PokemonColorDao) {
 
+    /**
+     * Returns a flow of PokemonColor tied to the specific Pokemon specified via [pokemonId]
+     *
+     * @param pokemonId Pokemon whose colors we want to obtain
+     */
     operator fun invoke(pokemonId: Int): Flow<PokemonColors> =
         pokemonColorDao.getPokemonColor(pokemonId).filterNotNull().distinctUntilChanged().map {
             it.toPokemonColors()

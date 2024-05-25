@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import cz.hrabe.pokedex.domain.GetPokemonWithColorsPagingDataUseCase
-import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.model.Pokemon
 import cz.hrabe.pokedex.domain.UpdatePokemonsColorsUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel

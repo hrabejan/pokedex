@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * Calculates Pokemon's average and contrast color and saves them locally
+ */
 class UpdatePokemonsColorsUserCase @Inject constructor(
     private val pokemonColorDao: PokemonColorDao,
     private val getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase

@@ -11,5 +11,8 @@ class GetPokemonWithColorsPagingDataUseCase @Inject constructor(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
+    /**
+     * Returns paginated data of Pokemon with colors
+     */
     operator fun invoke() = pokemonRepository.fetchPokemonWithColors().flowOn(defaultDispatcher)
 }
