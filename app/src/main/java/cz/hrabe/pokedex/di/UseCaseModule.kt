@@ -6,7 +6,7 @@ import cz.hrabe.pokedex.data.local.PokemonDao
 import cz.hrabe.pokedex.domain.GetPokemonWithColorsPagingDataUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsContrastColorUseCase
-import cz.hrabe.pokedex.domain.GetSinglePokemonFromDbUseCase
+import cz.hrabe.pokedex.domain.GetSinglePokemonWithColorsFromDbUseCase
 import cz.hrabe.pokedex.domain.UpdatePokemonsColorsUserCase
 import dagger.Module
 import dagger.Provides
@@ -23,7 +23,7 @@ object UseCaseModule {
 
     @Provides
     fun provideGetSinglePokemonFromDbUseCase(pokemonDao: PokemonDao) =
-        GetSinglePokemonFromDbUseCase(pokemonDao)
+        GetSinglePokemonWithColorsFromDbUseCase(pokemonDao)
 
     @Provides
     fun provideUpdatePokemonsColorsUseCase(
