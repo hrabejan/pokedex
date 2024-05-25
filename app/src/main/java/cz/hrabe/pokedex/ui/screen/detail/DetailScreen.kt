@@ -44,6 +44,9 @@ import cz.hrabe.pokedex.domain.model.PokemonColors
 import cz.hrabe.pokedex.ui.screen.components.TypeList
 import cz.hrabe.pokedex.ui.theme.spacing
 
+/**
+ * Detail screen containing more extensive information about a Pokemon
+ */
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,

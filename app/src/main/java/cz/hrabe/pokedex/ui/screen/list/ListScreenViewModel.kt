@@ -16,7 +16,6 @@ import javax.inject.Inject
 class ListScreenViewModel @Inject constructor(
     getPokemonWithColorsPagingDataUseCase: GetPokemonWithColorsPagingDataUseCase,
     private val updatePokemonsColorsUserCase: UpdatePokemonsColorsUserCase,
-    private val getPokemonsColorsUseCase: GetPokemonsColorsUseCase
 ) :
     ViewModel() {
 
@@ -24,7 +23,7 @@ class ListScreenViewModel @Inject constructor(
 
     fun onImageLoaded(pokemon: Pokemon, drawable: Drawable) {
         viewModelScope.launch {
-            updatePokemonsColorsUserCase(pokemon, drawable)
+            updatePokemonsColorsUserCase(pokemon.id, drawable)
         }
     }
 }

@@ -21,7 +21,7 @@ class UpdatePokemonsColorsUserCase @Inject constructor(
     private val getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
 ) {
 
-    suspend operator fun invoke(pokemon: Pokemon, drawable: Drawable) {
+    suspend operator fun invoke(pokemonId: Int, drawable: Drawable) {
 
         CoroutineScope(Dispatchers.Default).launch {
             try {
@@ -34,20 +34,17 @@ class UpdatePokemonsColorsUserCase @Inject constructor(
 
                 val colorInt = palette.getDominantColor(defaultColor)
                 if (colorInt != defaultColor) {
-                    val resultColorString = "#${colorInt.toUInt().toString(16)}".toColorInt()
-                    val resultColor = Color(resultColorString)
-                    val contrastColor = getPokemonsContrastColorUseCase(resultColor)
+                    val contrastColor = getPokemonsContrastColorUseCase(colorInt)
 
                     withContext(Dispatchers.IO) {
                         pokemonColorDao.upsert(
                             PokemonColorEntity(
-                                pokemon.id,
-                                resultColor.toArgb(),
-                                contrastColor.toArgb()
+                                pokemonId,
+                                colorInt,
+                                contrastColor
                             )
                         )
                     }
-                    Log.d("TAG", "$resultColorString for ${pokemon.name}")
                 } else {
                     Log.d("TAG", "Error getting dominant color")
                 }
