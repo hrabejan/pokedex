@@ -74,7 +74,7 @@ data class Pokemon(
      *
      * @param decimals number of decimals for inches
      */
-    fun heightFtIn(decimals: Int): String {
+    fun heightFtIn(decimals: Int = 1): String {
         val feet = (heightIn / 12).toInt()
         val leftover = heightIn % 12
 
