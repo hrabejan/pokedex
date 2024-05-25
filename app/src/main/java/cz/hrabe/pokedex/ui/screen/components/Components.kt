@@ -23,6 +23,7 @@ import cz.hrabe.pokedex.ui.theme.spacing
 
 /**
  * Element that can display pokemon's [Type]s (traits) in a list or a row
+ *
  * @param types pokemon's [Type] names
  * @param orientation specifies whether the list should be a row or a column
  * @param spacing specifies the spacing between the individual [Type]s
@@ -63,6 +64,9 @@ fun TypeList(
 
 /**
  * A pill-like element used to display pokemon's single trait
+ *
+ * @param name text inside of the pill
+ * @param color surface color of the pill
  */
 @Composable
 fun Type(
