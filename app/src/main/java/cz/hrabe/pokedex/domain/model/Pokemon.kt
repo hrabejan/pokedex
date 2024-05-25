@@ -40,7 +40,10 @@ data class Pokemon(
         get() = weight / 10.0
 
     /**
+     * Pokemon's weight in lbs
      *
+     * @param decimals number of decimals
+     * @param roundingMode see [RoundingMode]
      */
     fun weightLbs(decimals: Int = 1, roundingMode: RoundingMode = RoundingMode.HALF_UP): Double {
         val lbs = weightKg * 2.205
@@ -65,12 +68,14 @@ data class Pokemon(
      * Return's a text representation of height in feet and inches
      *
      * Example: 2' 7"
+     *
+     * @param decimals number of decimals for inches
      */
-    fun heightFtIn(): String {
+    fun heightFtIn(decimals:Int): String {
         val feet = (heightIn / 12).toInt()
         val leftover = heightIn % 12
 
-        return "$feet\' ${"%.1f".format(leftover)}\""
+        return "$feet\' ${"%.${decimals}f".format(leftover)}\""
     }
 
 }
