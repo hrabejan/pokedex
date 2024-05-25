@@ -3,7 +3,7 @@ package cz.hrabe.pokedex.di
 import cz.hrabe.pokedex.data.PokemonRepository
 import cz.hrabe.pokedex.data.local.PokemonColorDao
 import cz.hrabe.pokedex.data.local.PokemonDao
-import cz.hrabe.pokedex.domain.GetPokemonPagingDataUseCase
+import cz.hrabe.pokedex.domain.GetPokemonWithColorsPagingDataUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsColorsUseCase
 import cz.hrabe.pokedex.domain.GetPokemonsContrastColorUseCase
 import cz.hrabe.pokedex.domain.GetSinglePokemonFromDbUseCase
@@ -18,8 +18,8 @@ import dagger.hilt.components.SingletonComponent
 object UseCaseModule {
 
     @Provides
-    fun provideGetPokemonPagingDataUseCase(pokemonRepository: PokemonRepository) =
-        GetPokemonPagingDataUseCase(pokemonRepository)
+    fun provideGetPokemonWithColorsPagingDataUseCase(pokemonRepository: PokemonRepository) =
+        GetPokemonWithColorsPagingDataUseCase(pokemonRepository)
 
     @Provides
     fun provideGetSinglePokemonFromDbUseCase(pokemonDao: PokemonDao) =

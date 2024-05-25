@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetPokemonPagingDataUseCase @Inject constructor(
+class GetPokemonWithColorsPagingDataUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {

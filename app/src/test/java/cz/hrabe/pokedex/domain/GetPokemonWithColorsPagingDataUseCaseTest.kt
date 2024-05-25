@@ -10,14 +10,14 @@ import org.junit.Before
 import org.junit.Test
 
 
-class GetPokemonPagingDataUseCaseTest {
+class GetPokemonWithColorsPagingDataUseCaseTest {
     private lateinit var repository: PokemonRepository
-    private lateinit var useCase: GetPokemonPagingDataUseCase
+    private lateinit var useCase: GetPokemonWithColorsPagingDataUseCase
 
     @Before
     fun setUp() {
         repository = mockk<PokemonRepository>()
-        useCase = GetPokemonPagingDataUseCase(repository)
+        useCase = GetPokemonWithColorsPagingDataUseCase(repository)
     }
 
     @Test
