@@ -24,6 +24,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * DI module containing data access dependencies
+ */
 @OptIn(ExperimentalPagingApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
