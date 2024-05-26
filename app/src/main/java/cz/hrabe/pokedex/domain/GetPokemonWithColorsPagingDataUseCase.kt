@@ -12,7 +12,7 @@ class GetPokemonWithColorsPagingDataUseCase @Inject constructor(
 ) {
 
     /**
-     * Returns paginated data of Pokemon with colors
+     * Returns paginated data flow of Pokemon with colors
      */
     operator fun invoke() = pokemonRepository.fetchPokemonWithColors().flowOn(defaultDispatcher)
 }
