@@ -7,6 +7,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
+    /**
+     * Returns a PagingData flow of Pokemon
+     */
     fun fetchPokemon(): Flow<PagingData<Pokemon>>
+
+    /**
+     * Returns a PagingData flow of Pokemon with colors
+     */
     fun fetchPokemonWithColors(): Flow<PagingData<PokemonWithColors>>
 }
