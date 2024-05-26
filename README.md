@@ -5,4 +5,4 @@ The data is displayed as a card, showing each Pokemon's ID number (with leading 
 Every Pokemon item is clickable and will redirect the user to a details screen containing more information about the specific Pokemon (mostly placeholder in this case).<BR/>
 
 ## Application usage showcase
-![](https://github.com/hrabejan/pokedex/tree/master/showcase/showcase.gif)
+![Showcase GIF](./showcase/showcase.gif)
