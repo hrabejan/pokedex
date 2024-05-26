@@ -1,5 +1,6 @@
 package cz.hrabe.pokedex.data.remote
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -8,6 +9,13 @@ import cz.hrabe.pokedex.data.local.PokemonDatabase
 import cz.hrabe.pokedex.data.local.model.PokemonWithColorsEntity
 import cz.hrabe.pokedex.data.remote.model.pokemon.toPokemonEntity
 
+/**
+ * Handles Pokemon fetching if there is no data left in the local paging source or refreshing the dataset.
+ *
+ * @param pokemonApi PokemonApi interface to fetch new Pokemon
+ * @param pokemonDatabase A database reference used to save new Pokemon locally.
+ * The reason we need the database instead of only a DAO is so we can execute data manipulation in a transaction.
+ */
 @OptIn(ExperimentalPagingApi::class)
 class PokemonWithColorsRemoteMediator(
     private val pokemonApi: PokemonApi,
@@ -18,6 +26,7 @@ class PokemonWithColorsRemoteMediator(
         state: PagingState<Int, PokemonWithColorsEntity>
     ): MediatorResult {
         return try {
+            Log.d("Tag", "load: $loadType")
             //Get specified size of pages
             val pageSize = state.config.pageSize
 
@@ -45,6 +54,7 @@ class PokemonWithColorsRemoteMediator(
                 pokemonDto.toPokemonEntity()
             }
 
+            //If at one point the transaction fails, we can take restore the previous state
             pokemonDatabase.runInTransaction {
                 val pokemonDao = pokemonDatabase.pokemonDao
                 if (loadType == LoadType.REFRESH) {
