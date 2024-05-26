@@ -18,20 +18,25 @@ class PokemonWithColorsRemoteMediator(
         state: PagingState<Int, PokemonWithColorsEntity>
     ): MediatorResult {
         return try {
+            //Get specified size of pages
             val pageSize = state.config.pageSize
 
             val offset = when (loadType) {
+                //List is being refreshed, load from the beginning -> 0
                 LoadType.REFRESH -> 0
+                //Since we are listing ony towards the bottom, no prepend loading is used, hence the return Success.
                 LoadType.PREPEND -> return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
-
                 LoadType.APPEND -> {
+                    //Last available item's id in the list will serve as offset for the next API call
                     val lastItem = state.lastItemOrNull()
+                    //If last item not available, we're loading from the start -> return 0
                     lastItem?.pokemonEntity?.id ?: 0
                 }
             }
 
+            //Fetch basic pokemon listing
             val pokemonListing =
                 pokemonApi.fetchPokemonListing(limit = pageSize, offset = offset)
 
