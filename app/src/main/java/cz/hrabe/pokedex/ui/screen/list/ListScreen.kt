@@ -97,7 +97,8 @@ fun ListScreen(
             val width = size.width / 2f
             Size(width, width * hR)
         }, getOffset = { drawSize ->
-            Offset(size.width - drawSize.width, 0f)
+            val topEnd = Offset(size.width - drawSize.width, 0f)
+            Offset(topEnd.x + (drawSize.width * 0.3f), topEnd.y - (drawSize.height * 0.2f))
         }, color = MaterialTheme.colorScheme.onBackground),
         containerColor = Color.Transparent,
         topBar = {
@@ -156,6 +157,17 @@ fun ListScreen(
 
 }
 
+/**
+ * A single pokemon item in a list.
+ *
+ * Contains the Pokemon's number, name, it's [TypeList] and an image.
+ * All that with a slightly offset pokeball drawn in the bottom end corner.
+ *
+ * @param pokemon Displayed pokemon
+ * @param onImageLoaded Callback for when the image of a Pokemon has been loaded into view
+ * @param pokemonColors Pokemon's color scheme
+ * @param onClick Item click callback, passing the respective Pokemon
+ */
 @Composable
 fun PokemonItem(
     pokemon: Pokemon,
@@ -238,6 +250,16 @@ fun PokemonItem(
 }
 
 
+/**
+ * Serves as a basic container for [PokemonItem].
+ * Emits a clickable card with background color of [color], a pokeball drawn in the bottom end corner
+ * and the [content] in a [BoxScope].
+ *
+ * @param pokemon Just for onClick's callback function
+ * @param onClick On click callback
+ * @param color Color of the card's background
+ * @param content Card's content in a [BoxScope]
+ */
 @Composable
 fun PokemonItemCard(
     modifier: Modifier = Modifier,
@@ -251,13 +273,16 @@ fun PokemonItemCard(
         modifier = modifier
             .padding(MaterialTheme.spacing.mediumSmall)
     ) {
+        /*
+            Mostly here because of click effect clipping
+            If the card was clipped to a shape, it's elevation shadow would be lost
+         */
         Surface(
             modifier = Modifier
                 .clip(CardDefaults.shape)
                 .clickable { onClick(pokemon) }, color = color
         ) {
-
-
+            //Box server only as means to draw the pokeball background
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -265,7 +290,12 @@ fun PokemonItemCard(
                         val width = size.width / 1.8f
                         Size(width, width * hR)
                     }, getOffset = { newSize ->
-                        Offset(size.width - newSize.width, size.height - newSize.height)
+                        val bottomEnd =
+                            Offset(size.width - newSize.width, size.height - newSize.height)
+                        Offset(
+                            bottomEnd.x + (newSize.width * 0.08f),
+                            bottomEnd.y + (newSize.height * 0.08f)
+                        )
                     }, color = Color.White)
             ) {
                 content()
