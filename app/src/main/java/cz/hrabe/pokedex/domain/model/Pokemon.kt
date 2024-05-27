@@ -83,10 +83,29 @@ data class Pokemon(
      * @param decimals number of decimals for inches
      */
     fun heightFtIn(decimals: Int = 1): String {
-        val feet = (heightIn / 12).toInt()
-        val leftover = heightIn % 12
-
-        return "$feet\' ${"%.${decimals}f".format(leftover)}\""
+        return "$heightFt\' ${leftoverInches(decimals)}\""
     }
 
+    /**
+     * Rounded size in feet
+     */
+    val heightFt: Int = (heightIn / 12).toInt()
+
+    /**
+     * Number of inches left after deducting the size in feet
+     */
+    val leftoverInches: Double = heightIn % 12
+
+    /**
+     * Returns the number of inches left after deducting the size in feet
+     * with specified number of decimals
+     *
+     * @param decimals number of decimals
+     */
+    fun leftoverInches(decimals: Int = 1): String {
+        if (decimals < 0) {
+            return leftoverInches(0)
+        }
+        return "%.${decimals}f".format(leftoverInches)
+    }
 }
