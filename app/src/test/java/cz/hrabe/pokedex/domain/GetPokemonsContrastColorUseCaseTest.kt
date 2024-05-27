@@ -1,18 +1,13 @@
 package cz.hrabe.pokedex.domain
 
-import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.ColorUtils
-import io.mockk.MockK
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
-
 import org.junit.Test
-import org.junit.runner.RunWith
 
 class GetPokemonsContrastColorUseCaseTest {
     private lateinit var getPokemonsContrastColorUseCase: GetPokemonsContrastColorUseCase
