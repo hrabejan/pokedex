@@ -4,6 +4,14 @@ import java.math.RoundingMode
 
 /**
  * Describes a base UI model of a Pokemon that can be further broken down into specific screen models
+ *
+ * @param id Pokemon's identifier
+ * @param name Pokemon's name
+ * @param imageUrl URL pointing to an image of the Pokemon
+ * @param height Height in decimeters
+ * @param weight Weight in hectograms
+ * @param types Pokemon's type tags
+ * @param baseExperience Base experience gained for defeating the Pokemon
  */
 data class Pokemon(
     /**
